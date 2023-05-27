@@ -29,16 +29,6 @@ const SM3 = {
             return str
         }
         
-    },
-    /**
-     * 数组，字符串去重
-     * @param Array,String
-     * @returns 
-     */
-    Hash: function (params) {
-        return "hash"+params
-        
-    }
 }
 
 module.exports = SM3;

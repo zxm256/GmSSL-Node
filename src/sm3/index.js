@@ -1,3 +1,5 @@
+var ffi = require('ffi');
+var libm = ffi.Library("libm",{'ceil':['double',['double']]})
 const SM3 = {
     /**
      * 获取数据类型
@@ -7,6 +9,17 @@ const SM3 = {
     getTypeOf: (params) => {
         let type = Object.prototype.toString.call(params)
         return type.match(/\[\w+\W(\w+)\]$/)[1]
+    },
+    /**
+     * 数组，字符串去重
+     * @param Array,String
+     * @returns 
+     */
+    hash: function (params) {
+
+        var a = libm.ceil(params)
+        return a        
+        
     },
     /**
      * 数组，字符串去重
@@ -42,4 +55,5 @@ const SM3 = {
 }
 
 module.exports = SM3;
+
 
