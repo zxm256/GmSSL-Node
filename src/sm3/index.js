@@ -1,59 +1,19 @@
 var ffi = require('ffi');
-var libm = ffi.Library("libm",{'ceil':['double',['double']]})
+var gmssl = ffi.Library("libgmssl", {
+  sm3_digest: ["void", ["pointer", "int", "pointer"]],
+});
 const SM3 = {
-    /**
-     * 获取数据类型
-     * @param params 
-     * @returns 'String','Number'...
-     */
-    getTypeOf: (params) => {
-        let type = Object.prototype.toString.call(params)
-        return type.match(/\[\w+\W(\w+)\]$/)[1]
-    },
-    /**
-     * 数组，字符串去重
-     * @param Array,String
-     * @returns 
-     */
-    hash: function (params) {
-
-        var a = libm.ceil(params)
-        return a        
-        
-    },
-    /**
-     * 数组，字符串去重
-     * @param Array,String
-     * @returns 
-     */
-    unique: function(params) {
-        if (this.getTypeOf(params) === 'Array') {
-            return [...new Set(arr)]
-        }
-        if (this.getTypeOf(params) === 'String') {
-            let obj = {}
-            let str = ''
-            for(let i = 0, len = params.length; i < len; i++) {
-                if (!obj[params[i]]) {
-                    str += params[i]
-                    obj[params[i]] = true
-                }
-            }
-            return str
-        }
-        
-    },
-    /**
-     * 数组，字符串去重
-     * @param Array,String
-     * @returns 
-     */
-    Hash: function (params) {
-        return "hash"+params
-        
-    }
-}
+  /**
+   * SM3散列函数
+   * @param String, Int, Array
+   * @returns String
+   */
+  hash: function (params) {
+    var output = new Uint8Array(32);
+    var str = Buffer.from(params, 'utf8');
+    gmssl.sm3_digest(str, str.length, output);
+    return output;
+  },
+};
 
 module.exports = SM3;
-
-

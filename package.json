@@ -1,23 +1,24 @@
 {
-    "name": "gmssl-node",
-    "version": "1.0.1",
-    "description": "NodeJS Implementation of GmSSL",
-    "main": "dist/gmssl.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "npx webpack --config webpack.config.js  --mode development"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "ffi-napi": "^4.0.3"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.21.4",
-        "@babel/preset-env": "^7.21.4",
-        "babel-loader": "^9.1.2",
-        "webpack": "^5.79.0",
-        "webpack-cli": "^5.0.1"
-    }
+  "name": "gmssl-node",
+  "version": "1.0.1",
+  "description": "NodeJS Implementation of GmSSL",
+  "main": "dist/gmssl.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx webpack --config webpack.config.js  --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ffi-napi": "^4.0.3",
+    "ref-array-napi": "^1.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "babel-loader": "^9.1.2",
+    "webpack": "^5.79.0",
+    "webpack-cli": "^5.0.1"
+  }
 }

@@ -1,35 +1,49 @@
-const SM3 = {
-    /**
-     * 获取数据类型
-     * @param params 
-     * @returns 'String','Number'...
-     */
-    getTypeOf: (params) => {
-        let type = Object.prototype.toString.call(params)
-        return type.match(/\[\w+\W(\w+)\]$/)[1]
-    },
-    /**
-     * 数组，字符串去重
-     * @param Array,String
-     * @returns 
-     */
-    unique: function(params) {
-        if (this.getTypeOf(params) === 'Array') {
-            return [...new Set(arr)]
-        }
-        if (this.getTypeOf(params) === 'String') {
-            let obj = {}
-            let str = ''
-            for(let i = 0, len = params.length; i < len; i++) {
-                if (!obj[params[i]]) {
-                    str += params[i]
-                    obj[params[i]] = true
-                }
-            }
-            return str
-        }
-        
-}
+var ffi = require("ffi");
+var ref = require("ref");
+var Struct = require("ref-struct");
+const ArrayType  = require("ref-array");
+const SM4_KEY = Struct({
+  rk: ArrayType(ref.types.uint32, 32),
+});
+var gmssl = ffi.Library("libgmssl", {
+  sm4_set_encrypt_key: [
+    "void",
+    ["pointer", "pointer"],
+  ],
+  sm4_set_decrypt_key: [
+    "void",
+    ["pointer", "pointer"],
+  ],
+  sm4_encrypt: [
+    "void",
+    ["pointer","pointer", "pointer"],
+  ],
+});
+const SM4 = {
+  set_encrypt_key: function (params) {
+    const key = new SM4_KEY()    
+    var raw_key = new Uint8Array(params);
+    gmssl.sm4_set_encrypt_key(key.ref(),raw_key)
+    return key
+  },
+  encrypt: function (key,data) {
+    var input = new Uint8Array(data);
+    var output = new Uint8Array(16);
+    gmssl.sm4_encrypt(key.ref(),input,output)
+    return output;
+  },
+  set_decrypt_key: function (params) {
+    const key = new SM4_KEY()    
+    var raw_key = new Uint8Array(params);
+    gmssl.sm4_set_decrypt_key(key.ref(),raw_key)
+    return key
+  },
+  decrypt: function (key,data) {
+    var input = new Uint8Array(data);
+    var output = new Uint8Array(16);
+    gmssl.sm4_encrypt(key.ref(),input,output)
+    return output;
+  },
+};
 
-module.exports = SM3;
-
+module.exports = SM4;
